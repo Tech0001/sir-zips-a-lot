@@ -1,0 +1,16 @@
+{
+  "name": "sir-zips-a-lot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "tauri": "tauri",
+    "check": "node --check ui/app.js && cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings",
+    "test": "cargo test --workspace"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}

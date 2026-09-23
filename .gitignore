@@ -2,3 +2,11 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+
+# Rust build output
+/target
+
+# Desktop tooling
+/node_modules
+/src-tauri/gen

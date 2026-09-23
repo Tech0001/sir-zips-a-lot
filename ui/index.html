@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sir Zips-a-Lot</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="brand-mark" aria-hidden="true">S<span>Z</span></div>
+        <div>
+          <p class="eyebrow">A KNIGHT IN SHINING ARCHIVES</p>
+          <h1>Sir Zips-a-Lot</h1>
+          <p class="subtitle">Your orders, zipped and delivered.</p>
+        </div>
+        <span id="badge" class="badge">Off duty</span>
+      </header>
+
+      <section class="mission" aria-labelledby="mission-title">
+        <div class="section-heading">
+          <h2 id="mission-title">The delivery route</h2>
+          <span>One folder. One ZIP. On its way.</span>
+        </div>
+        <form id="watch-form">
+          <fieldset id="settings">
+            <label for="source"
+              ><span class="step">01</span> Orders folder</label
+            >
+            <div class="path-row">
+              <input
+                id="source"
+                name="source"
+                placeholder="Choose the folder where orders arrive"
+                required
+              /><button type="button" class="browse" data-target="source">
+                Browse…
+              </button>
+            </div>
+            <p class="hint">Each folder directly inside here is one order.</p>
+
+            <label for="destination"
+              ><span class="step">02</span> ZIP destination</label
+            >
+            <div class="path-row">
+              <input
+                id="destination"
+                name="destination"
+                placeholder="Choose where finished ZIPs should go"
+                required
+              /><button type="button" class="browse" data-target="destination">
+                Browse…
+              </button>
+            </div>
+            <p class="hint">
+              Finished archives go here. Original order folders stay in place.
+            </p>
+
+            <div class="quiet-row">
+              <div>
+                <label for="quiet-seconds">Wait for a quiet folder</label>
+                <p class="hint">
+                  Time without detected changes before zipping. Use longer for
+                  slow transfers.
+                </p>
+              </div>
+              <div class="number-field">
+                <input
+                  id="quiet-seconds"
+                  type="number"
+                  min="1"
+                  max="3600"
+                  value="30"
+                  required
+                /><span>seconds</span>
+              </div>
+            </div>
+          </fieldset>
+          <p id="error" class="error" role="alert" hidden></p>
+          <div class="action-row">
+            <p>
+              First setup leaves existing order folders alone.<br />Give each new
+              order a unique folder name.
+            </p>
+            <button id="start" type="submit" class="primary">
+              Start watching <span aria-hidden="true">→</span></button
+            ><button id="stop" type="button" class="stop" hidden>
+              Stop watching
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="stats" aria-label="Current session">
+        <div>
+          <span id="delivered" class="stat-number">0</span
+          ><span>Delivered this session</span>
+        </div>
+        <div>
+          <span id="pending" class="stat-number">0</span
+          ><span>Orders waiting</span>
+        </div>
+        <div class="status-stat">
+          <span id="status-dot" class="dot"></span>
+          <div>
+            <strong id="status-title">Ready when you are</strong>
+            <p id="status-detail">Choose your folders to get started.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="activity" aria-labelledby="activity-title">
+        <div class="section-heading">
+          <h2 id="activity-title">The quest log</h2>
+          <span>Latest 100 events</span>
+        </div>
+        <div id="activity-empty" class="empty">
+          <span aria-hidden="true">✧</span>
+          <p>No adventures yet.</p>
+          <small>Deliveries and any problems will appear here.</small>
+        </div>
+        <ol
+          id="activity-list"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+        ></ol>
+      </section>
+      <footer>
+        Closing this window keeps Sir Zips-a-Lot working in the system tray.
+        Right-click its tray icon to quit.
+      </footer>
+    </main>
+  </body>
+</html>
