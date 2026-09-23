@@ -10,9 +10,13 @@ A little desktop knight with one noble quest: turn incoming order folders into i
 
 Point him at the folder where orders arrive and choose where finished ZIPs should go. He watches for new orders, waits for the files to settle, and delivers each archive to its destination. Your mouse hand may retire from active duty.
 
+[**Recruit your knight — download the latest release**](https://github.com/Tech0001/sir-zips-a-lot/releases/latest)
+
+Choose the Windows `.exe` installer or the Linux `.AppImage`. On Linux, make the AppImage executable in your file manager's permissions, then open it.
+
 **Give him a quest**
 
-1. On Windows, run the setup installer and open **Sir Zips-a-Lot**.
+1. Open **Sir Zips-a-Lot**.
 2. Choose your **Orders folder**. Each folder directly inside it is one order.
 3. Choose a separate **ZIP destination**, such as `Desktop\Zipped Orders`.
 4. Click **Start watching**. Add a new order folder. Let the knight handle the packing.
