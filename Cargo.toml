@@ -1,6 +1,6 @@
 [package]
 name = "sir-zips-a-lot"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Find new orders, zip them up, and send them on their way."
 publish = false

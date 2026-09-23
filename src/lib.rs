@@ -52,6 +52,8 @@ pub(crate) fn snapshot(source: &Path) -> Result<Vec<EntryState>> {
 
 /// Package a single file or order directory into a completed ZIP in `destination`.
 ///
+/// A directory's contents live at the ZIP root, so extracting into a folder named
+/// after the ZIP restores the order without nesting a second order folder.
 /// Source files are preserved. Existing archives are never overwritten. Callers
 /// must establish that the source is ready before starting this operation.
 pub fn archive_order(source: &Path, destination: &Path) -> Result<PathBuf> {
@@ -113,10 +115,17 @@ pub(crate) fn archive_checked(
     let options = SimpleFileOptions::default()
         .compression_method(CompressionMethod::Deflated)
         .large_file(true);
-    let parent = source.parent().context("Order has no parent directory")?;
+    let archive_root = if metadata.is_dir() {
+        source.as_path()
+    } else {
+        source.parent().context("Order has no parent directory")?
+    };
 
     for entry in &before {
-        let relative = entry.path.strip_prefix(parent)?;
+        let relative = entry.path.strip_prefix(archive_root)?;
+        if relative.as_os_str().is_empty() {
+            continue;
+        }
         let zip_name = archive_path(relative)?;
         if entry.directory {
             writer.add_directory(format!("{zip_name}/"), options)?;
