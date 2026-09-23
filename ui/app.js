@@ -4,6 +4,41 @@ let busy = false;
 let status;
 let initialized = false;
 const renderedIds = new Set();
+const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+let chosenTheme;
+try {
+  const saved = localStorage.getItem("sir-zips-a-lot-theme");
+  if (saved === "light" || saved === "dark") chosenTheme = saved;
+} catch {
+  /* A theme choice still works if local storage is unavailable. */
+}
+
+function applyTheme() {
+  const theme = chosenTheme ?? (systemTheme.matches ? "dark" : "light");
+  document.documentElement.dataset.theme = theme;
+  const label = `Switch to ${theme === "dark" ? "light" : "dark"} mode`;
+  $("theme-toggle").setAttribute("aria-label", label);
+  $("theme-toggle").title = label;
+  const nativeWindow = window.__TAURI__?.window?.getCurrentWindow();
+  nativeWindow?.setTheme(chosenTheme ?? null).catch(() => {
+    // Some desktop environments own the title-bar theme themselves.
+  });
+}
+
+$("theme-toggle").addEventListener("click", () => {
+  chosenTheme =
+    document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  try {
+    localStorage.setItem("sir-zips-a-lot-theme", chosenTheme);
+  } catch {
+    /* Keep the in-memory preference. */
+  }
+  applyTheme();
+});
+systemTheme.addEventListener("change", () => {
+  if (!chosenTheme) applyTheme();
+});
+applyTheme();
 
 function showError(error) {
   $("error").textContent = String(error);

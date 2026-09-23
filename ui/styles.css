@@ -75,6 +75,24 @@ p {
   background: #f7e7c8;
   color: #755823;
 }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+.theme-toggle .sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .moon {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .sun {
+  display: block;
+}
 .mission,
 .activity {
   background: #fffefa;
@@ -345,6 +363,100 @@ footer {
 }
 [hidden] {
   display: none !important;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  color: #e7eadf;
+  background: #141e19;
+}
+[data-theme="dark"] .mission,
+[data-theme="dark"] .activity {
+  background: #1e2a23;
+  border-color: #35453a;
+}
+[data-theme="dark"] input {
+  background: #17211b;
+  border-color: #405245;
+  color: #e7eadf;
+}
+[data-theme="dark"] input::placeholder {
+  color: #8fa18f;
+}
+[data-theme="dark"] button {
+  background: #293a2f;
+  border-color: #405245;
+  color: #dde5d5;
+}
+[data-theme="dark"] button:hover {
+  filter: brightness(1.15);
+}
+[data-theme="dark"] .quiet-row {
+  background: #25332b;
+}
+[data-theme="dark"] .eyebrow,
+[data-theme="dark"] .subtitle,
+[data-theme="dark"] .section-heading > span,
+[data-theme="dark"] .step,
+[data-theme="dark"] .hint,
+[data-theme="dark"] .number-field,
+[data-theme="dark"] .action-row p,
+[data-theme="dark"] .stats > div > span:last-child,
+[data-theme="dark"] .status-stat p,
+[data-theme="dark"] .empty,
+[data-theme="dark"] li time,
+[data-theme="dark"] footer {
+  color: #afbcaa;
+}
+[data-theme="dark"] .empty > span {
+  color: #8ca080;
+}
+[data-theme="dark"] .badge {
+  background: #2b3a2e;
+  border-color: #405245;
+  color: #cad8c0;
+}
+[data-theme="dark"] .badge.active {
+  background: #294733;
+  color: #b8dfb6;
+}
+[data-theme="dark"] .badge.stopping {
+  background: #4c3e25;
+  color: #ecd194;
+}
+[data-theme="dark"] .primary {
+  background: #e6bd78;
+  border-color: #e6bd78;
+  color: #223126;
+}
+[data-theme="dark"] .primary span {
+  color: #223126;
+}
+[data-theme="dark"] .stop {
+  background: #483a28;
+  border-color: #6a5536;
+  color: #ebc991;
+}
+[data-theme="dark"] .error {
+  background: #452e28;
+  border-color: #735044;
+  color: #f4b3a0;
+}
+[data-theme="dark"] .status-stat,
+[data-theme="dark"] li {
+  border-color: #35453a;
+}
+[data-theme="dark"] li.error-event {
+  color: #f4b3a0;
+}
+[data-theme="dark"] li.success-event {
+  color: #a7d3a3;
+}
+[data-theme="dark"] .dot {
+  background: #829478;
+}
+[data-theme="dark"] .dot.active {
+  background: #9bc991;
+  box-shadow: 0 0 0 4px #2d4232;
 }
 @media (max-width: 720px) {
   main {

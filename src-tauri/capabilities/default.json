@@ -3,5 +3,9 @@
   "identifier": "main-window",
   "description": "Local desktop window and folder selection.",
   "windows": ["main"],
-  "permissions": ["core:default", "dialog:allow-open"]
+  "permissions": [
+    "core:default",
+    "core:window:allow-set-theme",
+    "dialog:allow-open"
+  ]
 }
