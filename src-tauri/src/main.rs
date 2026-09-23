@@ -12,7 +12,7 @@ use std::{
 };
 
 use serde::Serialize;
-use sir_zips_a_lot::watcher::{Config, Watcher, save_json};
+use sir_zips_a_lot::watcher::{Config, DEFAULT_POLL_SECONDS, Watcher, save_json};
 use tauri::{
     AppHandle, Manager, State, WindowEvent,
     menu::{Menu, MenuItem, PredefinedMenuItem},
@@ -112,6 +112,7 @@ async fn start_watch(config: Config, state: State<'_, AppState>) -> Result<(), S
             });
         }
     };
+    let poll_seconds = config.poll_seconds;
     {
         let mut status = state.status.lock().expect("Status lock poisoned");
         status.running = true;
@@ -140,7 +141,7 @@ async fn start_watch(config: Config, state: State<'_, AppState>) -> Result<(), S
                 }
             }
             // Respond promptly to Stop between scans.
-            for _ in 0..20 {
+            for _ in 0..poll_seconds * 10 {
                 if state.stop.load(Ordering::SeqCst) {
                     break;
                 }
@@ -214,6 +215,7 @@ fn main() {
                     source: PathBuf::new(),
                     destination: desktop.join("Zipped Orders"),
                     quiet_seconds: 30,
+                    poll_seconds: DEFAULT_POLL_SECONDS,
                 }),
                 ..Status::default()
             };

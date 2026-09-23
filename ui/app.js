@@ -52,6 +52,7 @@ function render(next) {
       $("source").value = next.config.source;
       $("destination").value = next.config.destination;
       $("quiet-seconds").value = next.config.quietSeconds;
+      $("poll-seconds").value = next.config.pollSeconds;
     }
     initialized = true;
   }
@@ -81,7 +82,7 @@ function render(next) {
   $("status-detail").textContent = next.stopping
     ? "Stopping after the current order."
     : next.running
-      ? "Checking for orders every 2 seconds."
+      ? `Checking for orders every ${next.config.pollSeconds} ${next.config.pollSeconds === 1 ? "second" : "seconds"}.`
       : "Press Start to put your knight on duty.";
   $("activity-empty").hidden = next.activity.length > 0;
   const currentIds = new Set(next.activity.map((entry) => entry.id));
@@ -146,6 +147,7 @@ $("watch-form").addEventListener("submit", async (event) => {
         source: $("source").value.trim(),
         destination: $("destination").value.trim(),
         quietSeconds: Number($("quiet-seconds").value),
+        pollSeconds: Number($("poll-seconds").value),
       },
     });
   } catch (error) {

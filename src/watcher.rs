@@ -11,12 +11,20 @@ use serde::{Deserialize, Serialize};
 
 use crate::{EntryState, archive_checked, is_link, snapshot};
 
+pub const DEFAULT_POLL_SECONDS: u64 = 10;
+
+fn default_poll_seconds() -> u64 {
+    DEFAULT_POLL_SECONDS
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Config {
     pub source: PathBuf,
     pub destination: PathBuf,
     pub quiet_seconds: u64,
+    #[serde(default = "default_poll_seconds")]
+    pub poll_seconds: u64,
 }
 
 impl Config {
@@ -32,6 +40,10 @@ impl Config {
         ensure!(
             (1..=3600).contains(&self.quiet_seconds),
             "Quiet period must be between 1 and 3600 seconds"
+        );
+        ensure!(
+            (1..=3600).contains(&self.poll_seconds),
+            "Scan interval must be between 1 and 3600 seconds"
         );
         let source = self
             .source
@@ -51,6 +63,7 @@ impl Config {
             source,
             destination,
             quiet_seconds: self.quiet_seconds,
+            poll_seconds: self.poll_seconds,
         })
     }
 }
@@ -244,9 +257,38 @@ mod tests {
             source,
             destination: temp.path().join("out"),
             quiet_seconds: 5,
+            poll_seconds: DEFAULT_POLL_SECONDS,
         };
         let history = temp.path().join("data/history.json");
         (temp, config, history)
+    }
+
+    #[test]
+    fn older_settings_gain_a_default_scan_interval_and_custom_intervals_are_saved() {
+        let (temp, mut config, _) = fixture();
+        let mut old_settings = serde_json::to_value(&config).unwrap();
+        old_settings.as_object_mut().unwrap().remove("pollSeconds");
+        let restored: Config = serde_json::from_value(old_settings).unwrap();
+        assert_eq!(restored.poll_seconds, 10);
+        assert_eq!(restored.quiet_seconds, config.quiet_seconds);
+
+        config.poll_seconds = 60;
+        let settings = temp.path().join("settings.json");
+        save_json(&settings, &config).unwrap();
+        let restored: Config = serde_json::from_slice(&fs::read(settings).unwrap()).unwrap();
+        assert_eq!(restored.validate().unwrap().poll_seconds, 60);
+        assert_eq!(restored.quiet_seconds, config.quiet_seconds);
+
+        for invalid in [0, 3601, u64::MAX] {
+            config.poll_seconds = invalid;
+            assert!(
+                config
+                    .validate()
+                    .unwrap_err()
+                    .to_string()
+                    .contains("Scan interval")
+            );
+        }
     }
 
     #[test]

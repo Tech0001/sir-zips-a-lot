@@ -192,6 +192,9 @@ input:disabled {
 .quiet-row label {
   margin: 0;
 }
+.quiet-row + .quiet-row {
+  margin-top: 10px;
+}
 .quiet-row .hint {
   margin: 5px 0 0;
   max-width: 400px;
